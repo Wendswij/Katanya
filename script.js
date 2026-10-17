@@ -6,7 +6,7 @@ const fmt = n => n >= 1e6 ? (n / 1e6).toFixed(1).replace('.0', '') + 'M' : n >= 
 const dur = ms => { const s = Math.round(ms / 1000); return Math.floor(s / 60) + 'm ' + String(s % 60).padStart(2, '0') + 's' };
 const rand = (a, b) => a + Math.random() * (b - a);
 
- const svg = (inner, defs = '') => `<svg viewBox="0 0 400 300" preserveAspectRatio="xMidYMid slice" aria-hidden="true">${defs ? `<defs>${defs}</defs>` : ''}${inner}</svg>`;
+const svg = (inner, defs = '') => `<svg viewBox="0 0 400 300" preserveAspectRatio="xMidYMid slice" aria-hidden="true">${defs ? `<defs>${defs}</defs>` : ''}${inner}</svg>`;
     const SC = {
         sunset: i => svg(`<rect width="400" height="300" fill="url(#su${i})"/><circle cx="200" cy="208" r="50" fill="#ffe2a0"/><path d="M0 222h400v78H0z" fill="#2b1d35"/><path d="M60 222v-46h6v46zM290 222v-30l34-16 34 16v30z" fill="#2b1d35"/><path d="M63 176l-16-11M63 176l16-11" stroke="#2b1d35" stroke-width="3"/><text class="hid" x="235" y="104" font-size="10" fill="#fff">its not actually</text>`,
             `<linearGradient id="su${i}" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#3a2c6e"/><stop offset=".58" stop-color="#f2735a"/><stop offset="1" stop-color="#ffc56e"/></linearGradient>`),
@@ -409,6 +409,8 @@ const rand = (a, b) => a + Math.random() * (b - a);
     const onIcon = e => {
         const b = e.target.closest('[data-icon]'); if (!b) return; const k = b.dataset.icon;
 
+        const off = document.querySelectorAll('#pops .win.sys').length * 28;
+
         if (k === 'fish') {
             const w = makeWin({
                 title: 'bubbles.jpg · Image Viewer',
@@ -416,7 +418,8 @@ const rand = (a, b) => a + Math.random() * (b - a);
                 html: '<img src="Images/bubbles.jpg" alt="Bubbles staring" style="display:block;width:100%;border:2px solid;border-color:var(--lo) var(--hi) var(--hi) var(--lo)">'
                     + '<p style="margin:8px 0 0;font-size:11px;color:var(--muted)">bubbles.jpg · 736 × 797 <br>This is Bubbles. Bubbles has been looking at you for longer than you\'ve been looking at anything.</p>'
                     + '<div style="margin-top:10px;text-align:right"><button class="btn" data-x>OK</button></div>',
-                x: 120, y: 30, cls: 'sys'
+                x: 120 + off, y: 30 + off, cls: 'sys'
+
             });
             w.addEventListener('click', ev => { if (ev.target.closest('[data-x],.x')) closeWin(w); });
             return;
@@ -429,7 +432,7 @@ const rand = (a, b) => a + Math.random() * (b - a);
                 html: '<img src="Images/fih.jpg" alt="Fig to camera" style="display:block;width:100%;border:2px solid;border-color:var(--lo) var(--hi) var(--hi) var(--lo)">'
                     + '<p style="margin:8px 0 0;font-size:11px;color:var(--muted)">fih.jpg · 736 × 981 <br>This is Fig. Fig would not hold still for three seconds. Fig is fine with that.</p>'
                     + '<div style="margin-top:10px;text-align:right"><button class="btn" data-x>OK</button></div>',
-                x: Math.max(8, desk.clientWidth - 430), y: 30, cls: 'sys'
+                x: Math.max(8, desk.clientWidth - 430 - off), y: 30 + off, cls: 'sys'
             });
             w.addEventListener('click', ev => { if (ev.target.closest('[data-x],.x')) closeWin(w); });
             return;
@@ -438,9 +441,13 @@ const rand = (a, b) => a + Math.random() * (b - a);
         const html = k === 'attn' ? '<p style="margin:0">This folder is empty.</p><p style="margin:6px 0 0;color:var(--muted);font-size:11px">0 items · 0 bytes free</p>'
             : k === 'bin' ? `<p style="margin:0">${S.visited.size} post(s) forgotten.</p><p style="margin:6px 0 0;color:var(--muted);font-size:11px">Emptied automatically.</p>`
                 : `<p style="margin:0;font-family:var(--f-mono);font-size:14px;line-height:1.6">${FRAGS.map((f, i) => S.frags.has(i) ? f : '_'.repeat(f.length)).join(' ')}</p>`;
-        const w = makeWin({ title: { attn: 'My Attention', bin: 'Recycle Bin', found: 'found.txt · Notepad' }[k], t1: '#1a2f86', t2: '#5b7be0', w: 260, html: html + '<div style="margin-top:12px;text-align:right"><button class="btn" data-x>OK</button></div>', x: 110, y: 40, cls: 'sys' });
+        const w = makeWin({
+            title: { attn: 'Info stuff', bin: 'Trash', found: 'goldfish.txt · Notepad' }[k], t1: '#1a2f86', t2: '#5b7be0', w: 260, html: html + '<div style="margin-top:12px;text-align:right"><button class="btn" data-x>OK</button></div>',
+            x: 110 + off, y: 40 + off, cls: 'sys'
+        });
         w.addEventListener('click', ev => { if (ev.target.closest('[data-x],.x')) closeWin(w) });
     };
+
     desk.querySelectorAll('.icons').forEach(el => el.addEventListener('click', onIcon));
 
     const NOTES = [['KATANYA!', 'maya.k liked your post'], ['KATANYA!', '3 people you may know just joined'], ['KATANYA!', '🔴 Something is happening right now'], ['Messages', 'You have 12 unread messages'], ['Screen Time', 'Your screen time was up 23% last week'], ['KATANYA!', 'You were mentioned in a thread'], ['Photos', 'Your memories from 3 years ago are ready'], ['KATANYA!', 'Someone viewed your profile'], ['MegaDealz', 'Flash sale ends in 10 minutes'], ['Battery', '20% remaining. Still scrolling?'], ['KATANYA!', 'priya shared a post with you'], ['KATANYA!', 'Don\'t miss what your friends are saying']];
