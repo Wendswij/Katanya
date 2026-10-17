@@ -260,7 +260,7 @@ const svg = (inner, defs = '') => `<svg viewBox="0 0 400 300" preserveAspectRati
         else if (idle < 1000 && status.textContent !== 'Done') setStatus('Done');
     }
     setInterval(tick, 100);
-    function topPop() { let best = null; document.querySelectorAll('#pops .win').forEach(w => { if (!best || +w.style.zIndex > +best.style.zIndex) best = w }); return best }
+    function topPop() { let best = null; document.querySelectorAll('#pops .win[data-ad]').forEach(w => { if (!best || +w.style.zIndex > +best.style.zIndex) best = w }); return best }
     function trigger() {
         const i = S.idx; S.paused.add(i);
         const w = topPop();
