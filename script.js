@@ -264,7 +264,7 @@ const svg = (inner, defs = '') => `<svg viewBox="0 0 400 300" preserveAspectRati
     function trigger() {
         const i = S.idx; S.paused.add(i);
         const w = topPop();
-        if (w && ADS[w.dataset.ad].secret && !S.popFound.has(w.dataset.ad)) { S.popFound.add(w.dataset.ad); w.classList.add('exposed'); const sc = ADS[w.dataset.ad].secret; showNote('you stopped', 'pop-up', sc.title, sc.body); return }
+        if (w && ADS[w.dataset.ad] && ADS[w.dataset.ad].secret && !S.popFound.has(w.dataset.ad)) { S.popFound.add(w.dataset.ad); w.classList.add('exposed'); const sc = ADS[w.dataset.ad].secret; showNote('you stopped', 'pop-up', sc.title, sc.body); return }
         const c = CARDS[i];
         if (c.secret && !S.found.has(i)) {
             S.found.add(i); feed.children[i].classList.add('exposed'); const sc = c.secret;
@@ -382,7 +382,7 @@ const svg = (inner, defs = '') => `<svg viewBox="0 0 400 300" preserveAspectRati
     function cap() { const c = S.idx < 10 ? 0 : S.idx < 20 ? 2 : S.idx < 32 ? 3 : 6; return desk.clientWidth < 620 ? Math.min(c, 4) : c }
     function spawn(id, force, opts = {}) {
         if (!S.started || S.ended) return;
-        const open = pops.children.length;
+        const open = pops.querySelectorAll('.win[data-ad]').length;
         if (!force && open >= cap()) return; if (open >= 10) return;
         if (!id) { for (let k = 0; k < POOL.length; k++) { const c = POOL[(poolK++) % POOL.length]; if (!pops.querySelector(`[data-ad="${c}"]`)) { id = c; break } } if (!id) return }
         const d = ADS[id]; const dw = desk.clientWidth, dh = desk.clientHeight;
