@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset=utf8>
+    <meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover">
+    <title>Katanya.exe</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+    <!-- Header -->
+    <title>Katanya</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="stylesheet"
+        href="https://fonts.googleapis.com/css2?family=Anton&family=Bungee&family=Courier+Prime:wght@400;700&family=VT323&display=swap">
+
+    <!-- Start -->
+    <div id="desk">
+        <div class="icons">
+            <button class="icon" data-icon="attn"><span class="g">📁</span><span>Info Stuff</span></button>
+            <button class="icon" data-icon="bin"><span class="g">🗑️</span><span>Trash</span></button>
+            <button class="icon" data-icon="found"><span class="g">📝</span><span>goldfish.txt</span></button>
+            <button class="icon" data-icon="fish"><span class="g"><img src="Images/bubbles.jpg"
+                        style="width:34px;height:34px;object-fit:cover;border:2px solid #fff;box-shadow:1px 1px 0 #000"></span><span>bubbles.jpg</span></button>
+        </div>
+        <div class="icons" style="left:auto;right:max(14px, env(safe-area-inset-right, 0px))">
+            <button class="icon" data-icon="fih"><span class="g"><img src="Images/fih.jpg"
+                        style="width:34px;height:34px;object-fit:cover;border:2px solid #fff;box-shadow:1px 1px 0 #000"></span><span>fig.jpg</span></button>
+        </div>
+        <div class="win" id="browser">
+            <div class="tb"><span class="tt" id="bTitle">Katanya · For You</span><span class="wb"
+                    aria-hidden="true">_</span><span class="wb" aria-hidden="true">□</span><span class="wb dis"
+                    aria-hidden="true">×</span></div>
+            <div class="toolbar"><span class="btn" aria-hidden="true">◀</span><span class="btn"
+                    aria-hidden="true">▶</span><span class="btn" aria-hidden="true">⟳</span><span
+                    class="addr ins">http://www.katanya.net/for-you<b>?page=∞</b></span></div>
+            <div class="viewport ins">
+                <main class="feed locked" id="feed" tabindex="0" aria-label="Feed"></main>
+            </div>
+            <div class="sbar"><span class="cell ins" id="status">Done</span><span class="cell ins" id="postCell">1 /
+                    50</span><span class="cell ins" id="fragCell" title="Hidden message">▯▯▯▯▯▯▯▯</span></div>
+
+        </div>
+
+        <!-- Welcome How To (tutorial to start) -->
+        <div class="win" id="welcome"
+            style="left:50%;top:50%;transform:translate(-50%,-50%);width:min(330px, calc(100% - 32px));z-index:50">
+            <div class="tb"><span class="tt">Katanya.exe</span></div>
+            <div class="wbody" style="display:flex;flex-direction:column;gap:12px">
+                <div style="font-family:var(--f-ad);font-size:30px;line-height:1">WELCOME</div>
+                <p style="margin:0">There are 50 posts in this feed. Scroll, swipe or use the arrow keys to get through
+                    them.
+                </p>
+                <p style="margin:0;color:var(--muted);font-size:12px">Warning: Pop-ups will appear. Close them however
+                    <br>you can.
+                </p>
+                <button class="btn big" id="startBtn">Start</button>
+            </div>
+
+            <!-- Bar -->
+        </div>
+        <div id="pops"></div>
+        <div id="cascade"></div>
+        <div class="tips" id="tips" aria-live="polite"></div>
+        <div class="note" id="note" hidden role="dialog" aria-labelledby="noteT">
+            <div class="k"><span id="noteK"></span><span id="noteN"></span></div>
+            <h3 id="noteT"></h3>
+            <p id="noteB"></p>
+            <div class="acts"><button class="btn" id="noteStay">Keep looking</button><button class="btn" id="noteGo"
+                    style="font-weight:bold">Keep scrolling</button></div>
+        </div>
+    </div>
+    <nav class="taskbar">
+        <span class="btn start" aria-hidden="true"><i></i>Start</span>
+        <div class="tasks" id="tasks"><span class="btn task main">Katanya.exe</span></div>
+        <span class="tray ins"><span class="n" id="trayN" hidden>0</span><span id="clock">9:41</span></span>
+    </nav>
+
+    <!-- Animated flash  -->
+    <div id="boot">Attention.OS 4.0<br>Checking attention........ <span id="b1"></span><br><span id="b2"></span></div>
+    <button id="bsod" hidden></button>
+    <div id="blackout" hidden></div>
+    <div id="stopfx" hidden>
+        <div class="in"><span class="code"><span>*** STOP: 0x00000050 ATTENTION_OVERFLOW</span></span><b>STOP</b>
+            <p id="stopLine"></p>
+        </div>
+
+        <!-- End -->
+    </div>
+    <section id="report" hidden aria-label="Attention report"></section>
+    <button id="safe" hidden>It's now safe to look up.<small>(tap to start again)</small></button>
+
+    <source>
+
+
+    <script src="script.js"></script>
+
+</body>
