@@ -6,7 +6,7 @@ const fmt = n => n >= 1e6 ? (n / 1e6).toFixed(1).replace('.0', '') + 'M' : n >= 
 const dur = ms => { const s = Math.round(ms / 1000); return Math.floor(s / 60) + 'm ' + String(s % 60).padStart(2, '0') + 's' };
 const rand = (a, b) => a + Math.random() * (b - a);
 
-const svg = (inner, defs = '') => `<svg viewBox="0 0 400 300" preserveAspectRatio="xMidYMid slice" aria-hidden="true">${defs ? `<defs>${defs}</defs>` : ''}${inner}</svg>`;
+ const svg = (inner, defs = '') => `<svg viewBox="0 0 400 300" preserveAspectRatio="xMidYMid slice" aria-hidden="true">${defs ? `<defs>${defs}</defs>` : ''}${inner}</svg>`;
     const SC = {
         sunset: i => svg(`<rect width="400" height="300" fill="url(#su${i})"/><circle cx="200" cy="208" r="50" fill="#ffe2a0"/><path d="M0 222h400v78H0z" fill="#2b1d35"/><path d="M60 222v-46h6v46zM290 222v-30l34-16 34 16v30z" fill="#2b1d35"/><path d="M63 176l-16-11M63 176l16-11" stroke="#2b1d35" stroke-width="3"/><text class="hid" x="235" y="104" font-size="10" fill="#fff">its not actually</text>`,
             `<linearGradient id="su${i}" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#3a2c6e"/><stop offset=".58" stop-color="#f2735a"/><stop offset="1" stop-color="#ffc56e"/></linearGradient>`),
@@ -252,23 +252,23 @@ const svg = (inner, defs = '') => `<svg viewBox="0 0 400 300" preserveAspectRati
         const t = now(); S.elapsed = t - S.startT; S.seen = S.visited.size;
         if (S.overlay) { S.lastAct = t; return }
         const idle = t - S.lastAct;
-        if (S.triggered !== S.idx && S.idx < TOTAL && idle > 2000) {
+        if (S.triggered !== S.idx && S.idx < TOTAL && idle > 1000) {
             const n = Math.min(10, Math.floor((idle - 1000) / 200));
             setStatus(`Looking closer…<span class="blocks">${Array.from({ length: 10 }, (_, k) => `<i class="${k < n ? 'on' : ''}"></i>`).join('')}</span>`);
             if (idle >= 3000) { S.triggered = S.idx; trigger() }
         } else if (S.statusT) { if (t > S.statusT) setStatus('Done') }
-        else if (idle < 2000 && status.textContent !== 'Done') setStatus('Done');
+        else if (idle < 1000 && status.textContent !== 'Done') setStatus('Done');
     }
     setInterval(tick, 100);
     function topPop() { let best = null; document.querySelectorAll('#pops .win').forEach(w => { if (!best || +w.style.zIndex > +best.style.zIndex) best = w }); return best }
     function trigger() {
         const i = S.idx; S.paused.add(i);
         const w = topPop();
-        if (w && ADS[w.dataset.ad].secret && !S.popFound.has(w.dataset.ad)) { S.popFound.add(w.dataset.ad); w.classList.add('exposed'); const sc = ADS[w.dataset.ad].secret; showNote('you stopped, so the pop-up showed its hand', 'pop-up', sc.title, sc.body); return }
+        if (w && ADS[w.dataset.ad].secret && !S.popFound.has(w.dataset.ad)) { S.popFound.add(w.dataset.ad); w.classList.add('exposed'); const sc = ADS[w.dataset.ad].secret; showNote('you stopped', 'pop-up', sc.title, sc.body); return }
         const c = CARDS[i];
         if (c.secret && !S.found.has(i)) {
             S.found.add(i); feed.children[i].classList.add('exposed'); const sc = c.secret;
-            if (sc.kind === 'frag') { S.frags.add(sc.frag); updFrag(); showNote(`hidden message · fragment ${sc.frag + 1} of 8`, `post #${i + 1}`, FRAGS[sc.frag], S.frags.size === 1 ? 'There is a hidden message in this post. The other pieces are tucked into posts you\'ll scroll past.' : `That's ${S.frags.size} of 8. The rest are still out there, in posts you'll pass.`, true) }
+            if (sc.kind === 'frag') { S.frags.add(sc.frag); updFrag(); showNote(`note. · fragment ${sc.frag + 1} of 8`, `post #${i + 1}`, FRAGS[sc.frag], S.frags.size === 1 ? 'There is a hidden message in this post. The other pieces are tucked into posts you\'ll scroll past.' : `That's ${S.frags.size} of 8. The rest are still out there, in posts you'll pass.`, true) }
             else { const k = { context: 'context you might have missed', hidden: 'note.', question: 'a question, while you\'re here' }[sc.kind]; showNote(k, `post #${i + 1}`, sc.title, typeof sc.body === 'function' ? sc.body(S) : sc.body) }
         }
         else setStatus(c.secret ? 'You already looked closely here.' : 'Nothing here. Probably.', 2600);
